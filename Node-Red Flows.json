@@ -1,0 +1,172 @@
+[
+    {
+        "id": "7f29e2b0.62bc8c",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "32bdd55d.a5e99a",
+        "type": "debug",
+        "z": "7f29e2b0.62bc8c",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 830,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "45efa2e3.59ac6c",
+        "type": "ui_form",
+        "z": "7f29e2b0.62bc8c",
+        "name": "",
+        "label": "",
+        "group": "69842caf.0ffe94",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Enter the input",
+                "value": "input",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "input": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 90,
+        "y": 360,
+        "wires": [
+            [
+                "4054e46e.ccfbec"
+            ]
+        ]
+    },
+    {
+        "id": "4054e46e.ccfbec",
+        "type": "function",
+        "z": "7f29e2b0.62bc8c",
+        "name": "func 1",
+        "func": "msg.payload=msg.payload.input;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 250,
+        "y": 260,
+        "wires": [
+            [
+                "7742aee6.7c929",
+                "917ec14d.3fa1e"
+            ]
+        ]
+    },
+    {
+        "id": "7742aee6.7c929",
+        "type": "ui_text",
+        "z": "7f29e2b0.62bc8c",
+        "group": "69842caf.0ffe94",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Input",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 370,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "917ec14d.3fa1e",
+        "type": "watson-conversation-v1",
+        "z": "7f29e2b0.62bc8c",
+        "name": "Assistant",
+        "workspaceid": "8d6f7af1-729e-4ebb-8cf8-f10b00c00e6d",
+        "multiuser": false,
+        "context": false,
+        "empty-payload": false,
+        "service-endpoint": "https://api.eu-gb.assistant.watson.cloud.ibm.com/instances/9d9f9fd1-1955-4f84-9eaa-d56677ae5d1f",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 460,
+        "y": 180,
+        "wires": [
+            [
+                "32bdd55d.a5e99a",
+                "afa9da93.7be228"
+            ]
+        ]
+    },
+    {
+        "id": "afa9da93.7be228",
+        "type": "function",
+        "z": "7f29e2b0.62bc8c",
+        "name": "func 2",
+        "func": "msg.payload.text=\"\";\nif(msg.payload.context.webhook_result_1){\n    for(var i in msg.payload.context.webhook_result_1.results){\n        msg.payload.text=msg.payload.text+\"\\n\"+msg.payload.context.webhook_result_1.results[i].text;\n    }\n    msg.payload=msg.payload.text;\n}\nelse{\n    msg.payload = msg.payload.output.text[0];\n}\n\nreturn msg; ",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 660,
+        "y": 320,
+        "wires": [
+            [
+                "2b9ce79.dadbf18"
+            ]
+        ]
+    },
+    {
+        "id": "2b9ce79.dadbf18",
+        "type": "ui_text",
+        "z": "7f29e2b0.62bc8c",
+        "group": "61da3eb.a51d9c",
+        "order": 1,
+        "width": "15",
+        "height": "14",
+        "name": "",
+        "label": "output",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "x": 870,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "69842caf.0ffe94",
+        "type": "ui_group",
+        "z": "",
+        "name": "Customer query",
+        "tab": "41911029.0a345",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false
+    },
+    {
+        "id": "61da3eb.a51d9c",
+        "type": "ui_group",
+        "z": "",
+        "name": "Bot Response",
+        "tab": "41911029.0a345",
+        "order": 2,
+        "disp": true,
+        "width": 15,
+        "collapse": false
+    },
+    {
+        "id": "41911029.0a345",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Customer Care Desk",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
